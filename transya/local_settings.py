@@ -19,7 +19,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'transya',
             'USER': 'root',
-            'PASSWORD': 'backtrack5',
+            'PASSWORD': '',
             'HOST': 'localhost',
             'PORT': '3306',
             # 'OPTIONS': {'charset': 'utf8mb4'},
