@@ -21,7 +21,6 @@
 
 
     function doRuTrans(text, result_el) {
-        //return $.get( "/translate/", { to_lang: "en", text: text } );
         $.get("/translate/", {to_lang: "en", text: text})
             .done(function (data) {
                 var parser = new DOMParser;
@@ -32,12 +31,11 @@
     }
 
     function doEnTrans(text, result_el) {
-        //return $.get( "/translate/", { to_lang: "ru", text: text } );
         $.get("/translate/", {to_lang: "ru", text: text})
             .done(function (data) {
-                alert(data);
-                alert(decodeURIComponent(data));
-                result_el.val(data);
+                var parser = new DOMParser;
+                var dom = parser.parseFromString(data, 'text/html');
+                result_el.val(dom.body.textContent);
                 Materialize.updateTextFields();
             });
     }
@@ -135,7 +133,7 @@
             </div>
             <div class="col s12 center"><br/><br/></div>
             <div class="col s12  center">
-                <table id="translations" class="bordered striped centered responsive-table">
+                <table id="translations" class="bordered striped centered">
                     <thead>
                     <tr>
                         <th>русский</th>
@@ -169,7 +167,6 @@
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-{#        <link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">#}
 
 
     {% endblock %}
