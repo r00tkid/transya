@@ -26,7 +26,7 @@ SECRET_KEY = '38d$vq%d#&#&%bg7*#su_0zgi&$&)0==44aad6*%zrs7945wei'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mysterious-lowlands-84836.herokuapp.com']
 
 API_KEY = 'trnsl.1.1.20170324T092612Z.a907c5af91fbcf88.9e79eeee73f9a1edea73f856b089f3d3b34534fb'
 
