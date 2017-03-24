@@ -30,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['mysterious-lowlands-84836.herokuapp.com', 'localhost']
 
-API_KEY = 'trnsl.1.1.20170324T092612Z.a907c5af91fbcf88.9e79eeee73f9a1edea73f856b089f3d3b34534fb'
+API_KEY = ''
 
 # Application definition
 
