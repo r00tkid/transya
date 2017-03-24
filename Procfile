@@ -1,0 +1,1 @@
+web: gunicorn transya.wsgi --log-file -

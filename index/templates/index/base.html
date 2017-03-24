@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+{% block head %}
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+        <title>django ;)</title>
+        <!-- CSS  -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="{% static 'index/css/slice.css' %}" rel="stylesheet">
+    </head>
+{% endblock %}
+<body>
+
+<script>
+    var last = null;
+
+    function checkRuEn(ru, en) {
+        return ru.val() != '' || en.val() != '';
+    }
+
+
+    function doRuTrans(text, result_el) {
+        //return $.get( "/translate/", { to_lang: "en", text: text } );
+        $.get("/translate/", {to_lang: "en", text: text})
+            .done(function (data) {
+                result_el.val(data);
+                Materialize.updateTextFields();
+            });
+    }
+
+    function doEnTrans(text, result_el) {
+        //return $.get( "/translate/", { to_lang: "ru", text: text } );
+        $.get("/translate/", {to_lang: "ru", text: text})
+            .done(function (data) {
+                result_el.val(data);
+                Materialize.updateTextFields();
+            });
+    }
+
+
+    function doTranslate() {
+        var ru = $('#ru');
+        var en = $('#en');
+        if (checkRuEn(ru, en) == true) {
+            if(ru.val() != '' && en.val != ''){
+                if(last == 'ru'){
+                    doRuTrans(ru.val(), en);
+                }else if (last == 'en'){
+                    doEnTrans(en.val(), ru);
+                }
+            }else{
+                if (ru.val() != '') {
+                    doRuTrans(ru.val(), en);
+                } else {
+                    doEnTrans(en.val(), ru);
+                }
+            }
+        } else {
+            alert('Ну вы же забыли ввести текст! =)');
+        }
+    }
+
+    function saveTranslate() {
+        var ru = $('#ru');
+        var en = $('#en');
+        if (ru.val() != '' && en.val() != '') {
+            $.get("/translate/save/", {ru: ru.val(), en: en.val()})
+                .done(function (data) {
+                    alert('saved');
+                });
+        }
+    }
+
+    function showTranslate() {
+        $.get("/translate/show/")
+            .done(function (data) {
+                var translations = $('#translations').find('tbody');
+                translations.empty();
+                var jdata = $.parseJSON(data).data;
+
+                for(var i=0; i<jdata.length;i++){
+                    var ru  = jdata[i].ru;
+                    var en  = jdata[i].en;
+                    var newRow = "<tr><td>" + ru + "</td><td>" + en + "</td></tr>";
+                    translations.append(newRow);
+                }
+            });
+    }
+
+</script>
+
+{% block body %}
+
+    {% block nav %}
+
+    {% endblock %}
+
+    {% block top_section %}
+        <div class="row">
+            <div class="col s12 center">
+                <h2>ПЕРЕВЕСТИ</h2>
+            </div>
+            <div class="col s5 center">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea onchange="last='ru';" id="ru" class="materialize-textarea"></textarea>
+                        <label for="ru">Русский</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col s2 center">
+                <a onclick="doTranslate();" class="btn-floating btn-large waves-effect waves-light red"><i
+                        class="material-icons"><-></i></a>
+            </div>
+            <div class="col s5 center">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea onchange="last='en';" id="en" class="materialize-textarea"></textarea>
+                        <label for="en">English</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12  center"><br/></div>
+            <div class="col s12  center">
+                <a onclick="saveTranslate()" class="waves-effect waves-light btn" style="min-width: 300px;"><i
+                        class="material-icons left">cloud</i>Сохранить перевод</a>
+                <br/><br/>
+                <a onclick="showTranslate()" class="waves-effect waves-light btn" style="min-width: 300px;"><i
+                        class="material-icons right">cloud</i>Показать из бд</a>
+            </div>
+            <div class="col s12 center"><br/><br/></div>
+            <div class="col s12  center">
+                <table id="translations" class="bordered striped centered responsive-table">
+                    <thead>
+                    <tr>
+                        <th>русский</th>
+                        <th>english</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endblock %}
+
+
+    {% block middle_section %}
+
+    {% endblock %}
+
+    {% block bottom_section %}
+
+    {% endblock %}
+
+    {% block footer %}
+
+    {% endblock %}
+
+    {% block extra_scripts %}
+        <!--  Scripts-->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'index/css/style.css' %}">
+
+
+        <script src="{% static 'index/js/init.js' %}"></script>
+    {% endblock %}
+{% endblock %}
+</body>
+</html>
